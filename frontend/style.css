@@ -1,0 +1,36 @@
+body {
+    background: #121212;
+    color: #ffffff;
+    font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;
+  }
+  
+  hr {
+    border: 1px solid #232323;
+  }
+  
+  .container {
+    margin-top: 10px;
+    margin-left: 4px;
+  }
+  
+  .entry:hover {
+    background: #232323;
+    border-radius: 5px;
+  }
+  
+  
+  .search {
+    outline: none;
+    border: 2px solid #343434;
+    border-radius: 10px;
+    background: none;
+    color: #ffffff;
+    width: 92vw;
+    height: 35px;
+    padding-left: 8px;
+    font-size: 17px;
+  }
+  
+  @media (min-width: 768px) { /* desktop */
+    .search { width: 95vw; }
+  }
