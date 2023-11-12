@@ -1,6 +1,6 @@
 # sone
-simple, minimalist music streaming.
-![screenshot](https://i.postimg.cc/1tqJVB6T/image.png)
+simple, minimalist music streaming.<br>
+<img src="https://i.postimg.cc/1tqJVB6T/image.png" alt="screenshot" width="300" />
 
 ## installation
 ```sh
