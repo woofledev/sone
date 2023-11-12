@@ -12,7 +12,7 @@ app.use('/', express.static(path.join(__dirname, '..', 'frontend')))     /* enab
 
 
 app.get('/api/search', (req, res) => {
-  const query = req.query.q.toLowerCase().replace(/\s/g, '');
+  const query = req.query.q.toLowerCase().trim();
   if (!query || query.length < 2) { return res.status(400).json({ error: "no query/shorther than 2 chars" }) }
 
   fs.readdir(songdir, (err, files) => {

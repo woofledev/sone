@@ -31,7 +31,7 @@ var qs=function(r){var e=document.querySelector(r);return{_:e,len:e.length,on:fu
       xhr.forEach((data) => {
         // parsing the metadata
         var name = data.name.match(/^(.+?)(?: - (.+?))?(?: - (.+))(\.\w+)$/);
-        let meta = name[2] === undefined ? `${name[1]}` : `${name[2]} · ${name[1]}`;
+        let meta = name[2] === undefined ? `${name[1]}` : `${name[2]} · ${name[1]}`; // if album is undefined, use artist instead.
   
 
         const entry = document.createElement('div'), 
@@ -40,7 +40,7 @@ var qs=function(r){var e=document.querySelector(r);return{_:e,len:e.length,on:fu
         
         entry.appendChild(title);
         entry.appendChild(document.createElement('br'));
-        entry.appendChild(document.createTextNode(meta)); // Append the rest
+        entry.appendChild(document.createTextNode(meta));
         entry.classList.add('entry');
 
         
@@ -50,7 +50,7 @@ var qs=function(r){var e=document.querySelector(r);return{_:e,len:e.length,on:fu
           audio._.src = uri;
           audio._.controls = true;
           audio._.play();
-          document.title = `sone | ${name[1]} - ${name[3]}`;
+          document.title = `sone | ${name[1]} - ${name[3]}`;  // artist - title
         };
         container.append(entry);
         container.append(document.createElement('hr'));

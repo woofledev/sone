@@ -11,9 +11,9 @@ npm start
 
 ### adding songs
 you can add songs by placing them inside the `backend/songs` directory.<br>
-you can also organize them into 'clusters' (folders), however avoid nesting folders.<br>
+you can also organize them into 'clusters' (folders), however avoid nesting them.<br>
 
-make sure your songs follow this naming convention, or else they won't show up in the frontend (correctly): **`artist - album - title.mp3`**<br>
+make sure your files follow this naming convention, or else they won't show up in the frontend (correctly): **`artist - album - title.mp3`**<br>
 
 some examples:
 - `songs/Frank Ocean/Frank Ocean - Novacane.mp3`
