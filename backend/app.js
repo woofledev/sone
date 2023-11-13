@@ -11,12 +11,12 @@ app.use('/cluster', express.static(songdir));
 app.use('/', express.static(path.join(__dirname, '..', 'frontend')))     /* enables frontend */
 
 
-app.get('/api/search', (req, res) => {
+app.get('/api/search', async (req, res) => {
   const query = req.query.q.toLowerCase().trim();
-  if (!query || query.length < 2) { return res.status(400).json({ error: "no query/shorther than 2 chars" }) }
+  if (!query || query.length < 2) { return res.status(400).json({ error: "no query/shorter than 2 chars" }) }
 
   fs.readdir(songdir, (err, files) => {
-    if (err) { return res.sendStatus(500) }
+    if (err) { return res.status(500).json({ error: "server error" }); }
     const results = [];
 
     files.forEach((f) => {

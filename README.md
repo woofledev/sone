@@ -7,6 +7,9 @@ simple, minimalist music streaming.<br>
 git clone https://github.com/woofledev/sone && cd sone/backend
 npm install
 npm start
+
+# you might also want to remove .gitkeep from the songs directory
+rm -f songs/.gitkeep
 ```
 
 ### adding songs

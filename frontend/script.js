@@ -15,7 +15,9 @@ var qs=function(r){var e=document.querySelector(r);return{_:e,len:e.length,on:fu
       xhr.open(method, url, true);
       xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
-          cb(JSON.parse(xhr.responseText));
+          cb(JSON.parse(xhr.responseText), false);
+        } else {
+          cb(JSON.parse(xhr.responseText), true);
         }
       };
       xhr.send();
@@ -25,18 +27,20 @@ var qs=function(r){var e=document.querySelector(r);return{_:e,len:e.length,on:fu
 
   
   var search = qs('.search'), container = qs('.container');
-  function handler() {
-    container.html('');
-    util.xhr("GET", `${server}/api/search?q=${search._.value}`, (xhr) => {
+  function searchHandler() {
+    util.xhr("GET", `${server}/api/search?q=${search._.value}`, (xhr, err) => {
+      container.html('');
+      if (err) { container.html(`<b>error: ${xhr.error}</b>`) };
+
       xhr.forEach((data) => {
         // parsing the metadata
-        var name = data.name.match(/^(.+?)(?: - (.+?))?(?: - (.+))(\.\w+)$/);
-        let meta = name[2] === undefined ? `${name[1]}` : `${name[2]} · ${name[1]}`; // if album is undefined, use artist instead.
+        var name = data.name.match(/^(.+?)(?: - (.+?))?(?: - (.+))(\.\w+)$/) || [data.name];
+        let meta = name[2] ? `${name[2]} · ${name[1]}` : name[1] || name[0]; // if album is undefined, use artist/filename.
   
 
         const entry = document.createElement('div'), 
               title = document.createElement('b');
-        title.appendChild(document.createTextNode(name[3]));
+        title.appendChild(document.createTextNode(name[3] || name[0]));
         
         entry.appendChild(title);
         entry.appendChild(document.createElement('br'));
@@ -50,12 +54,12 @@ var qs=function(r){var e=document.querySelector(r);return{_:e,len:e.length,on:fu
           audio._.src = uri;
           audio._.controls = true;
           audio._.play();
-          document.title = `sone | ${name[1]} - ${name[3]}`;  // artist - title
+          document.title = `sone | ${name[1]||'???'} - ${name[3]||name[0]}`;  // artist - title
         };
         container.append(entry);
         container.append(document.createElement('hr'));
       });
     });
   }  
-  search.on('input', util.debounce(handler, 300));
+  search.on('input', util.debounce(searchHandler, 300));
 })();
