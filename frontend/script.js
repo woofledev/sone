@@ -16,7 +16,7 @@ var qs=function(r){var e=document.querySelector(r);return{_:e,len:e.length,on:fu
       xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
           cb(JSON.parse(xhr.responseText), false);
-        } else {
+        } else if (xhr.responseText !== '') {  // error
           cb(JSON.parse(xhr.responseText), true);
         }
       };
@@ -30,7 +30,7 @@ var qs=function(r){var e=document.querySelector(r);return{_:e,len:e.length,on:fu
   function searchHandler() {
     util.xhr("GET", `${server}/api/search?q=${search._.value}`, (xhr, err) => {
       container.html('');
-      if (err) { container.html(`<b>error: ${xhr.error}</b>`) };
+      if (err) { return container.html(`<b>error: ${xhr.error}</b>`) };
 
       xhr.forEach((data) => {
         // parsing the metadata
