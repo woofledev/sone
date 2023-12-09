@@ -1,8 +1,7 @@
-var qs=function(r){var e=document.querySelector(r);return{_:e,len:e.length,on:function(n,t,i){e.addEventListener(n,t,i)},off:function(n,t,i){e.removeEventListener(n,t,i)},text:function(n){if(n===void 0)return e.innerText;e.innerText=n},html:function(n){if(n===void 0)return e.innerHTML;e.innerHTML=n},css:function(n,t){if(t===void 0)return window.getComputedStyle(e)[n];e.style[n]=t},first:e.firstChild,class:e.classList,attr:function(n,t){if(t===void 0)return e.getAttribute(n);e.setAttribute(n,t)},append:function(n){return e.appendChild(n)},prepend:function(n){return e.insertBefore(n,this.first)},remove:function(){return e.parentNode.removeChild(e)},show:function(){this.css("display","")},hide:function(){this.css("display","none")}}};
-
 (()=>{
   const server = location.origin;  // server location
   const util = {
+    $: s => document.querySelector(s),
     debounce: function(cb, delay) {
       let timer;
       return function() {
@@ -26,16 +25,16 @@ var qs=function(r){var e=document.querySelector(r);return{_:e,len:e.length,on:fu
 
 
   
-  var search = qs('.search'), container = qs('.container');
+  var search = util.$('.sr'), container = util.$('.container');
   function searchHandler() {
-    util.xhr("GET", `${server}/api/search?q=${search._.value}`, (xhr, err) => {
-      container.html('');
-      if (err) { return container.html(`<b>error: ${xhr.error}</b>`) };
+    util.xhr("GET", `${server}/api/search?q=${search.value}`, (xhr, err) => {
+      container.innerHTML = '';
+      if (err) { return container.innerHTML = `<b>error: ${xhr.error}</b>` };
 
       xhr.forEach((data) => {
         // parsing the metadata
         var name = data.name.match(/^(.+?)(?: - (.+?))?(?: - (.+))(\.\w+)$/) || [data.name];
-        let meta = name[2] ? `${name[2]} · ${name[1]}` : name[1] || name[0]; // if album is undefined, use artist/filename.
+        let meta = name[2] ? `${name[2]} Â· ${name[1]}` : name[1] || name[0]; // if album is undefined, use artist/filename.
   
 
         const entry = document.createElement('div'), 
@@ -50,16 +49,16 @@ var qs=function(r){var e=document.querySelector(r);return{_:e,len:e.length,on:fu
         
         entry.onclick = () => {
           const uri = data.cluster === null ? `${server}/cluster/${data.name}` : `${server}/cluster/${data.cluster}/${data.name}`
-          const audio = qs('#audio');
-          audio._.src = uri;
-          audio._.controls = true;
-          audio._.play();
+          const audio = util.$('#audio');
+          audio.src = uri;
+          audio.controls = true;
+          audio.play();
           document.title = `sone | ${name[1]||'???'} - ${name[3]||name[0]}`;  // artist - title
         };
-        container.append(entry);
-        container.append(document.createElement('hr'));
+        container.appendChild(entry);
+        container.appendChild(document.createElement('hr'));
       });
     });
   }  
-  search.on('input', util.debounce(searchHandler, 300));
+  search.addEventListener('input', util.debounce(searchHandler, 300));
 })();
